@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("TakeCommand")]
 [assembly: AssemblyDescription("Allows Kerbals to be launched in External Command Seats")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sean McDougall")]
-[assembly: AssemblyProduct("TakeCommand")]
-[assembly: AssemblyCopyright("Copyright © Sean McDougall 2016")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany(TakeCommand.LegalMamboJambo.Company)]
+[assembly: AssemblyProduct(TakeCommand.LegalMamboJambo.Product)]
+[assembly: AssemblyCopyright(TakeCommand.LegalMamboJambo.Copyright)]
+[assembly: AssemblyTrademark(TakeCommand.LegalMamboJambo.Trademark)]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
