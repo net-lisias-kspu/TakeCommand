@@ -1,10 +1,10 @@
-# TakeCommand Unofficial
+# TakeCommand /L Unleashed
 
 Originally written by @seanmcdougall. Fix for 1.2.2 provided by @GFX5000i
 
-## In a Hurry
+Continuation of the Take Command - Unleashed fork by Lisias.
 
-Continuation of the Take Command - unofficial fork by Lisias.
+## In a Hurry
 
 * [Latest Release](https://github.com/net-lisias-kspu/TakeCommand/releases)
 	+ [Binaries](https://github.com/net-lisias-kspu/TakeCommand/tree/Archive)
@@ -39,12 +39,12 @@ Credits
 
 ## UPSTREAM
 
-* [linuxgurugamer](https://forum.kerbalspaceprogram.com/index.php?/profile/129964-linuxgurugamer/):
-	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/153436-141-take-command-continued-launch-kerbals-in-external-command-seats/&)
-	+ [CurseForge](https://spacedock.info/mod/1112/TakeCommandContinued)
-	+ [GitHub](https://github.com/linuxgurugamer/TakeCommand/releases)
-* [seanmcdougall](https://forum.kerbalspaceprogram.com/index.php?/profile/143691-seanmcdougall/):
+* [seanmcdougall](https://forum.kerbalspaceprogram.com/index.php?/profile/143691-seanmcdougall/): ROOT
 	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/108711-112-take-command-launch-kerbals-in-external-command-seats-v141-may-6-2016/)
 	+ [SpaceDock](https://spacedock.info/mod/585/Take%20Command)
 	+ [CurseForge](https://www.curseforge.com/kerbal/ksp-mods/take-command)
 	+ [GitHub](https://github.com/seanmcdougall/TakeCommand/releases)
+* [linuxgurugamer](https://forum.kerbalspaceprogram.com/index.php?/profile/129964-linuxgurugamer/):
+	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/153436-141-take-command-continued-launch-kerbals-in-external-command-seats/&)
+	+ [CurseForge](https://spacedock.info/mod/1112/TakeCommandContinued)
+	+ [GitHub](https://github.com/linuxgurugamer/TakeCommand/releases)
