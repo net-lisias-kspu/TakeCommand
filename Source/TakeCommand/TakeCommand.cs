@@ -108,7 +108,7 @@ namespace TakeCommand
             this.commCapable = false;
             bool isHibernating = this.IsHibernating;
 
-            var ksList = this.part.Modules.OfType<KerbalSeat>();
+			IEnumerable<KerbalSeat> ksList = this.part.Modules.OfType<KerbalSeat>();
             KerbalSeat ks = this.part.Modules.OfType<KerbalSeat>().First();
             //  KerbalEVA kev;
             // Part seatParent = null;
@@ -124,11 +124,11 @@ namespace TakeCommand
             // Kerbal kerbal = null;
             ProtoCrewMember pcm = null;
 #if false
-            foreach (var k in ksList)
+            foreach (KerbalSeat k in ksList)
             {
                 if (k.Occupant != null)
                 {
-                    foreach (var k2 in k.Occupant.Modules.OfType<KerbalEVA>())
+                    foreach (KerbalEVA k2 in k.Occupant.Modules.OfType<KerbalEVA>())
                     {
                         if (k2 != null)
                         {
@@ -147,17 +147,17 @@ namespace TakeCommand
                 if (keva != null)
                 {
 
-                    var seatParentList = getModulePartParent("KerbalEVA", keva);
+					List<Part> seatParentList = getModulePartParent("KerbalEVA", keva);
 
                     if (seatParentList != null)
                     {
-                        foreach (var seatParent in seatParentList)
+                        foreach (Part seatParent in seatParentList)
                         {
-                            foreach (var p in seatParent.protoModuleCrew)
                             Log.detail(
                                     "seatParent: {0}  seatParent.protoModuleCrew.count: {1}",
                                     seatParent.partInfo.title, seatParent.protoModuleCrew.Count()
                                 );
+                            foreach (ProtoCrewMember p in seatParent.protoModuleCrew)
                             {
                                 Log.detail(
                                         "Looking for: {0}      p.name: {1}",
@@ -408,9 +408,9 @@ namespace TakeCommand
                                         if (kerbal.flagItems == 0)
                                             kerbal.AddFlag();
 
-                                        var freeModule = this.part.Modules.OfType<KerbalSeat>().First(t => t.Occupant == null);
                                         Log.info("seating {0} in {1}", kerbal.name, this.part.GetInstanceID());
 										// Board in first unoccupied seat
+										KerbalSeat freeModule = this.part.Modules.OfType<KerbalSeat>().First(t => t.Occupant == null);
 
                                         freeModule.BoardSeat();
 
