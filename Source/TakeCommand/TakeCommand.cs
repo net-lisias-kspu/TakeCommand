@@ -70,7 +70,7 @@ namespace TakeCommand
                     escapeHatchCollider.isTrigger = true;
 
                     this.part.airlock = escapeHatch.transform;
-                    print("[TakeCommand] added escape hatch to " + this.part.name + " (" + this.part.GetInstanceID() + ")");
+                    Log.info("added escape hatch to {0} ({1})", this.part.name, this.part.GetInstanceID());
 
                     // Disable it for now until we need it
                     escapeHatch.GetComponent<Collider>().enabled = false;
@@ -115,7 +115,7 @@ namespace TakeCommand
 
             if (ks == null)
             {
-                Log.Error("Can't find KerbalSeat in part: " + this.part.partInfo.title);
+                Log.error("Can't find KerbalSeat in part: {0}", this.part.partInfo.title);
                 this.controlSrcStatusText = "No Crew";
                 this.moduleState = ModuleCommand.ModuleControlState.NotEnoughCrew;
                 return VesselControlState.Kerbal;
@@ -153,10 +153,16 @@ namespace TakeCommand
                     {
                         foreach (var seatParent in seatParentList)
                         {
-                            Log.Info("seatParent: " + seatParent.partInfo.title + "  seatParent.protoModuleCrew.count: " + seatParent.protoModuleCrew.Count().ToString());
                             foreach (var p in seatParent.protoModuleCrew)
+                            Log.detail(
+                                    "seatParent: {0}  seatParent.protoModuleCrew.count: {1}",
+                                    seatParent.partInfo.title, seatParent.protoModuleCrew.Count()
+                                );
                             {
-                                Log.Info("Looking for: " + ks.Occupant.partInfo.title + "      p.name: " + p.name);
+                                Log.detail(
+                                        "Looking for: {0}      p.name: {1}",
+                                        ks.Occupant.partInfo.title, p.name
+                                    );
                                 if (p.name == ks.Occupant.partInfo.title)
                                 {
                                     // Look for a crew member, if possible
@@ -178,9 +184,10 @@ namespace TakeCommand
             }
             else
             {
-                Log.Info("No occupant in any seat");
-                Log.Info("this.vessel.name: " + this.vessel.name);
-                Log.Info("FlightGlobals.ActiveVessel.name: " + FlightGlobals.ActiveVessel.name);
+                Log.warn(
+                        "No occupant in any seat! this.vessel.name: {0), FlightGlobals.ActiveVessel.name: {1}",
+                        this.vessel.name, FlightGlobals.ActiveVessel.name
+                    );
 
                 this.controlSrcStatusText = "No Crew";
                 this.moduleState = ModuleCommand.ModuleControlState.NotEnoughCrew;
@@ -202,9 +209,9 @@ namespace TakeCommand
             else
             {
                 if (ks.Occupant != null)
-                    Log.Error("Unable to find Kerbal: " + ks.Occupant.partInfo.title + " in crew list");
+                    Log.error("Unable to find Kerbal: {0} in crew list", ks.Occupant.partInfo.title);
                 else
-                    Log.Error("Unable to find Kerbal in crew list");
+                    Log.error("Unable to find Kerbal in crew list");
                 this.controlSrcStatusText = "No Crew";
                 this.moduleState = ModuleCommand.ModuleControlState.NotEnoughCrew;
                 return VesselControlState.Kerbal;
@@ -301,7 +308,7 @@ namespace TakeCommand
         }
         public override void OnUpdate()
         {
-            Log.Info("OnUpdate 1");
+            Log.dbg("OnUpdate 1");
             if (HighLogic.LoadedSceneIsFlight) // && vessel.HoldPhysics == true)
             {
                 // Make sure controls are unlocked (workaround for compatibility issue with Kerbal Joint Reinforcement)
@@ -310,7 +317,7 @@ namespace TakeCommand
                     if (this.part.protoModuleCrew.Count > 0 && allCommandSeats.Count == 0)
                     {
 
-                        print("[TakeCommand] populating seat list");
+                        Log.detail("populating seat list");
                         foreach (Part p in vessel.parts)
                         {
                             if (p.Modules.OfType<TakeCommand>().Any())
@@ -321,13 +328,14 @@ namespace TakeCommand
                                 }
                             }
                         }
-                        print("[TakeCommand] found " + allCommandSeats.Count + " occupied seats");
+                        Log.detail("[TakeCommand] found {0} occupied seats", allCommandSeats.Count);
                     }
-                    Log.Info("this.part.protoModuleCrew.Count: " + this.part.protoModuleCrew.Count());
+
+                    Log.detail("this.part.protoModuleCrew.Count: {0}", this.part.protoModuleCrew.Count());
 #if true
                     if (!error)
                     {
-                        Log.Info("OnUpdate 2");
+                        Log.dbg("OnUpdate 2");
 
                         if (FlightEVA.hatchInsideFairing(this.part))
                         {
@@ -337,13 +345,13 @@ namespace TakeCommand
                         }
                         else
                         {
-                            Log.Info("OnUpdate 3");
+                            Log.dbg("OnUpdate 3");
 
                             if (boardKerbal == false)
                             {
-                                Log.Info("OnUpdate 4");
+                                Log.dbg("OnUpdate 4");
 
-                                Log.Info("boardKerbal");
+                                Log.detail("boardKerbal");
                                 if (this.part.protoModuleCrew.Count > 0 && allCommandSeats.First().GetInstanceID() == this.part.GetInstanceID())
                                 {
                                     // Time to eject this crew member
@@ -353,7 +361,7 @@ namespace TakeCommand
 
                                         kerbal = this.part.protoModuleCrew[0];
                                         //ProtoCrewMember kerbal = this.part.protoModuleCrew.First();
-                                        print("[TakeCommand] ejecting " + kerbal.name + " from " + this.part.GetInstanceID());
+                                        Log.detail("ejecting {0} from {1}", kerbal.name, this.part.GetInstanceID());
                                         escapeHatch.GetComponent<Collider>().enabled = true;
                                         if (FlightEVA.fetch.spawnEVA(kerbal, this.part, escapeHatch.transform))
                                         {
@@ -365,12 +373,12 @@ namespace TakeCommand
                                         }
                                         else
                                         {
-                                            print("[TakeCommand] error ejecting " + kerbal.name);
+                                            Log.detail("error ejecting {0}", kerbal.name);
                                             ScreenMessages.PostScreenMessage("Unable to put kerbal: " + kerbal.name + " into the external seat", 5.0f, ScreenMessageStyle.UPPER_CENTER);
                                             ScreenMessages.PostScreenMessage("Revert and try again", 5.0f, ScreenMessageStyle.UPPER_CENTER);
 
                                             error = true;
-                                            Log.Info("Error set true");
+                                            Log.dbg("Error set true");
                                             break;
                                             //    this.part.protoModuleCrew.Remove(kerbal);
                                         }
@@ -380,17 +388,17 @@ namespace TakeCommand
                             }
                             else
                             {
-                                Log.Info("OnUpdate 5");
+                                Log.dbg("OnUpdate 5");
 
                                 // Check and wait until the ejected Kerbal is the active vessel before proceeding
-                                Log.Info("this.vessel.name: " + this.vessel.name);
-                                Log.Info("FlightGlobals.ActiveVessel.name: " + FlightGlobals.ActiveVessel.name);
+                                Log.detail("this.vessel.name: {0}", this.vessel.name);
+                                Log.detail("FlightGlobals.ActiveVessel.name: {0}", FlightGlobals.ActiveVessel.name);
                                 if (this.vessel == FlightGlobals.ActiveVessel)
-                                    Log.Info("this.vessel is activevessel, myKerbal: " + myKerbal);
+                                    Log.detail("this.vessel is activevessel, myKerbal: {0}", myKerbal);
                                 if (FlightGlobals.ActiveVessel.name == myKerbal || FlightGlobals.ActiveVessel.name == myFemaleKerbal)
                                 {
                                     KerbalEVA kerbal = FlightGlobals.ActiveVessel.GetComponent<KerbalEVA>();
-                                    Log.Info("kerbal.fsm.currentStateName: " + kerbal.fsm.currentStateName);
+                                    Log.detail("kerbal.fsm.currentStateName: {0}", kerbal.fsm.currentStateName);
                                     if (kerbal.fsm.Started == true)
                                     {
                                         allCommandSeats.Remove(allCommandSeats.First());
@@ -400,9 +408,9 @@ namespace TakeCommand
                                         if (kerbal.flagItems == 0)
                                             kerbal.AddFlag();
 
-                                        print("[TakeCommand]  seating " + kerbal.name + " in " + this.part.GetInstanceID());
-                                        // Board in first unoccupied seat
                                         var freeModule = this.part.Modules.OfType<KerbalSeat>().First(t => t.Occupant == null);
+                                        Log.info("seating {0} in {1}", kerbal.name, this.part.GetInstanceID());
+										// Board in first unoccupied seat
 
                                         freeModule.BoardSeat();
 
@@ -412,7 +420,7 @@ namespace TakeCommand
                         }
                     }
                     else
-                        Log.Info("error is true");
+                        Log.dbg("error is true");
 #endif
                 }
             }
