@@ -185,7 +185,7 @@ namespace TakeCommand
             else
             {
                 Log.warn(
-                        "No occupant in any seat! this.vessel.name: {0), FlightGlobals.ActiveVessel.name: {1}",
+                        "No occupant in any seat! this.vessel.name: {0}, FlightGlobals.ActiveVessel.name: {1}",
                         this.vessel.name, FlightGlobals.ActiveVessel.name
                     );
 
